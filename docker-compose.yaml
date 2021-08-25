@@ -5,6 +5,7 @@ services:
     build:
       context: .
       dockerfile: dockerfiles/nginx.dockerfile
+    container_name: nginx
     ports: 
       - '80:80'
     volumes: 
@@ -17,6 +18,7 @@ services:
     build:
       context: .
       dockerfile: dockerfiles/php.dockerfile
+    container_name: php
     user: '${UID}:${UID}'
     volumes: 
       - ${PROJECT_VOLUME}
@@ -24,8 +26,10 @@ services:
     image: mysql:5.7
     env_file: 
       - ./mysql.env
+    container_name: mysql
   composer:
     image: composer:latest
+    container_name: composer
     user: '${UID}:${UID}'
     working_dir: ${WORKING_DIR}
     entrypoint: [ "composer", "--ignore-platform-reqs" ]
@@ -37,17 +41,20 @@ services:
       dockerfile: ./dockerfiles/php.dockerfile
       args:
         install_node: 1
+    container_name: artisan
     volumes:
       - ${PROJECT_VOLUME}
     entrypoint: ["php", "${WORKING_DIR}/artisan"]
   npm:
     image: node:14
+    container_name: npm
     working_dir: ${WORKING_DIR}
     entrypoint: ["npm"]
     volumes: 
       - ${PROJECT_VOLUME}
   node:
     image: node:14
+    container_name: node
     working_dir: ${WORKING_DIR}
     volumes:
       - ${PROJECT_VOLUME}
