@@ -1,1 +1,10 @@
-.idea
+/*
+
+!dockerfiles
+!.env
+!.gitignore
+!docker-compose.yaml
+!LICENSE
+!mysql.env
+!nginx.conf
+!README.md
