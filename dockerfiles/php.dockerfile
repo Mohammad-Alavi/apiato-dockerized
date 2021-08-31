@@ -1,15 +1,15 @@
-FROM php:7.4-fpm
+FROM php:8.0.10-fpm-alpine
 
 ARG install_node=0
 
-RUN docker-php-ext-install pdo pdo_mysql
+COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr/local/bin/
 
-RUN apt-get -y update \
-    && apt-get install -y libicu-dev \
-    && docker-php-ext-configure intl \
-    && docker-php-ext-install intl
+RUN install-php-extensions mysqli pdo_mysql gd xdebug bcmath gmp intl mcrypt
 
-RUN if [ "$install_node" = 1 ]; then apt-get -y install nodejs ; fi
+# none alpine
+RUN #if [ "$install_node" = 1 ]; then apt-get -y install nodejs ; fi
+# alpine
+RUN if [ "$install_node" = 1 ]; then apk add --update nodejs ; fi
 
 WORKDIR /var/www/html
 

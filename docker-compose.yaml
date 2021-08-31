@@ -20,11 +20,11 @@ services:
       dockerfile: dockerfiles/php.dockerfile
     container_name: php
     user: '${UID}:${UID}'
-    volumes: 
+    volumes:
       - ${PROJECT_VOLUME}
   mysql:
     image: mysql:5.7
-    env_file: 
+    env_file:
       - ./mysql.env
     container_name: mysql
   composer:
