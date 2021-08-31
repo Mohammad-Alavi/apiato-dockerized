@@ -58,3 +58,10 @@ services:
     working_dir: ${WORKING_DIR}
     volumes:
       - ${PROJECT_VOLUME}
+  psalm:
+    build:
+      context: .
+      dockerfile: dockerfiles/php.dockerfile
+    container_name: php
+    volumes:
+      - ${PROJECT_VOLUME}
