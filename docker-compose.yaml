@@ -28,11 +28,11 @@ services:
       - ./mysql.env
     container_name: mysql
   composer:
-    image: composer:latest
+    build:
+      context: .
+      dockerfile: dockerfiles/composer.dockerfile
     container_name: composer
     user: '${UID}:${UID}'
-    working_dir: ${WORKING_DIR}
-    entrypoint: [ "composer", "--ignore-platform-reqs" ]
     volumes:
       - ${PROJECT_VOLUME}
   artisan:
