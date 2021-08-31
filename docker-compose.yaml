@@ -62,6 +62,6 @@ services:
     build:
       context: .
       dockerfile: dockerfiles/php.dockerfile
-    container_name: php
+    container_name: psalm
     volumes:
       - ${PROJECT_VOLUME}
