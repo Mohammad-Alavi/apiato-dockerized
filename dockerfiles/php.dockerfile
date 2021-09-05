@@ -11,6 +11,8 @@ RUN #if [ "$install_node" = 1 ]; then apt-get -y install nodejs ; fi
 # alpine
 RUN if [ "$install_node" = 1 ]; then apk add --update nodejs ; fi
 
+ENV xdebug.mode=coverage
+
 WORKDIR /var/www/html
 
 COPY apiato .
