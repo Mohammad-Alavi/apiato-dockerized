@@ -42,6 +42,7 @@ services:
       args:
         install_node: 1
     container_name: artisan
+    user: '${UID}:${UID}'
     volumes:
       - ${PROJECT_VOLUME}
     entrypoint: ["php", "${WORKING_DIR}/artisan"]
