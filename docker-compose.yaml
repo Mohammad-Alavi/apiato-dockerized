@@ -23,10 +23,14 @@ services:
     volumes:
       - ${PROJECT_VOLUME}
   mysql:
-    image: mysql:5.7
-    env_file:
-      - ./mysql.env
+    build:
+      context: .
+      dockerfile: dockerfiles/mysql.dockerfile
     container_name: mysql
+    env_file:
+      - ./mysql/mysql.env
+    volumes:
+      - ./mysql/init:/docker-entrypoint-initdb.d
   composer:
     build:
       context: .

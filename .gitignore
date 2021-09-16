@@ -5,6 +5,6 @@
 !.gitignore
 !docker-compose.yaml
 !LICENSE
-!mysql.env
+!mysql/
 !nginx.conf
 !README.md
