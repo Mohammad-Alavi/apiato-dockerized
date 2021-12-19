@@ -1,4 +1,4 @@
-FROM php:8.0.10-fpm-alpine
+FROM php:8.1.0-fpm-alpine
 
 ARG install_node=0
 
