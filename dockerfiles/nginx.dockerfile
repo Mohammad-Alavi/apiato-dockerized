@@ -2,7 +2,7 @@ FROM nginx:stable-alpine
 
 WORKDIR /etc/nginx/conf.d
 
-COPY nginx.conf .
+COPY ../configs/nginx.conf .
 
 RUN mv nginx.conf default.conf
 

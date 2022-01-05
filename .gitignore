@@ -5,6 +5,9 @@
 !.gitignore
 !docker-compose.yaml
 !LICENSE
+!configs
 !mysql/
-!nginx.conf
+!postgres/
+postgres/data
+!configs/nginx.conf
 !README.md
