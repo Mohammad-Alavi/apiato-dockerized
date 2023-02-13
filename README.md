@@ -7,3 +7,13 @@
 5. npm install
 6. generate docs docs
 7. remove storage/logs/laravel.log if it causes any access permission problems. or sudo chown melkor:melkor laravel.log
+8. set up the database
+```dotenv
+DB_CONNECTION=mysql
+DB_HOST=mysql
+DB_PORT=3306
+# or
+DB_CONNECTION=pgsql
+DB_HOST=postgres
+DB_PORT=5432
+```
