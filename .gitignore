@@ -8,6 +8,6 @@
 !configs
 !mysql/
 !postgres/
-postgres/data
+postgres/data/
 !configs/nginx.conf
 !README.md

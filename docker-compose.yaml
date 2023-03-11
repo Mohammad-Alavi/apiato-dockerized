@@ -5,7 +5,7 @@ services:
     build:
       context: .
       dockerfile: dockerfiles/nginx.dockerfile
-    container_name: nginx
+    container_name: ${PROJECT_FOLDER_NAME}_nginx
     ports:
       - '80:80'
     volumes: 
@@ -20,7 +20,18 @@ services:
     build:
       context: .
       dockerfile: dockerfiles/php.dockerfile
-    container_name: php
+    container_name: ${PROJECT_FOLDER_NAME}_php
+    user: '${UID}:${UID}'
+    volumes:
+      - ${PROJECT_VOLUME}
+      - ./configs/php.ini:/usr/local/etc/php/conf.d/custom.ini
+#      - ./configs/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini
+#      - ./configs/error_reporting.ini:/usr/local/etc/php/conf.d/error_reporting.ini
+  php_wo_xdebug:
+    build:
+      context: .
+      dockerfile: dockerfiles/php_wo_xdebug.dockerfile
+    container_name: ${PROJECT_FOLDER_NAME}_php
     user: '${UID}:${UID}'
     volumes:
       - ${PROJECT_VOLUME}
@@ -29,7 +40,7 @@ services:
     build:
       context: .
       dockerfile: dockerfiles/mysql.dockerfile
-    container_name: mysql
+    container_name: ${PROJECT_FOLDER_NAME}_mysql
     ports:
       - "3306:3306"
     env_file:
@@ -38,7 +49,7 @@ services:
       - ./mysql/init:/docker-entrypoint-initdb.d
   postgres:
     image: postgres:14.1
-    container_name: postgres
+    container_name: ${PROJECT_FOLDER_NAME}_postgres
     restart: always
     user: '${UID}:${UID}'
     env_file:
@@ -50,7 +61,7 @@ services:
       - "5432:5432"
   adminer:
     image: adminer
-    container_name: adminer
+    container_name: ${PROJECT_FOLDER_NAME}_adminer
     restart: always
     ports:
       - "8090:8080"
@@ -62,6 +73,16 @@ services:
     user: '${UID}:${UID}'
     volumes:
       - ${PROJECT_VOLUME}
+    entrypoint: [ "composer", "--ignore-platform-reqs" ]
+  composer_wo_entrypoint:
+    build:
+      context: .
+      dockerfile: dockerfiles/composer.dockerfile
+    container_name: composer
+    user: '${UID}:${UID}'
+    volumes:
+      - ${PROJECT_VOLUME}
+    entrypoint: [ "composer" ]
   artisan:
     build:
       context: .
