@@ -1,13 +1,12 @@
 /*
 
 !dockerfiles
-!.env
+!.env.example
 !.gitignore
 !docker-compose.yaml
 !LICENSE
-!configs
 !mysql/
 !postgres/
 postgres/data/
-!configs/nginx.conf
+!config
 !README.md
