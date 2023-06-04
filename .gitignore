@@ -1,6 +1,7 @@
 /*
 
 !dockerfiles
+.env
 !.env.example
 !.gitignore
 !docker-compose.yaml
