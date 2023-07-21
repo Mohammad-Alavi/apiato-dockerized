@@ -13,8 +13,17 @@
 DB_CONNECTION=mysql
 DB_HOST=mysql
 DB_PORT=3306
+DB_DATABASE=mysql
 # or
 DB_CONNECTION=pgsql
 DB_HOST=postgres
 DB_PORT=5432
+DB_DATABASE=postgres
+# credentials (same for both setup)
+DB_USERNAME=homestead
+DB_PASSWORD=secret
 ```
+
+#### Note to myself:
+Build the base_php image:  
+`docker build -f dockerfiles/php.dockerfile --tag=masmikh/php_base:latest --target=php_base .`

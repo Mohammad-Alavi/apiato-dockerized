@@ -12,33 +12,37 @@ services:
       - ${PROJECT_VOLUME:?err}
       - ./config/nginx.conf:/etc/nginx/conf.d/default.conf:ro
     depends_on:
-      - php_debug
-      - mysql
+      - php
+      - postgres
+  php:
+    image: masmikh/php_base:latest
+    container_name: php
+    user: '${UID}:${UID}'
+    volumes:
+      - ${PROJECT_VOLUME:?err}
+      - ./.composer:/.composer
+      - ./config/php.ini:/usr/local/etc/php/conf.d/custom.ini
   php_debug:
     build:
       context: .
       dockerfile: dockerfiles/php.dockerfile
       target: php_debug
+    image: masmikh/php_debug:latest
     container_name: php_debug
     user: '${UID}:${UID}'
     volumes:
       - ${PROJECT_VOLUME:?err}
+      - ./.composer:/.composer
       - ./config/php.ini:/usr/local/etc/php/conf.d/custom.ini
   mysql:
-    build:
-      context: .
-      dockerfile: dockerfiles/mysql.dockerfile
+    image: mysql:5.7
     container_name: mysql
     ports:
       - "3306:3306"
     env_file:
       - ./mysql/mysql.env
-    volumes:
-      - ./mysql/init:/docker-entrypoint-initdb.d
   postgres:
-    build:
-      context: .
-      dockerfile: dockerfiles/postgres.dockerfile
+    image: ghcr.io/baosystems/postgis:14-3.3
     container_name: postgres
     restart: always
     user: '${UID}:${UID}'
@@ -49,6 +53,7 @@ services:
       - ./postgres/data:/var/lib/postgresql/data
       - ./postgres/conf:/etc/postgresql
       - ./postgres/log:/var/log/postgresql
+      - ./postgres/install-citext.sql:/docker-entrypoint-initdb.d/install-citext.sql
     ports:
       - "5432:5432"
     command:
@@ -61,38 +66,6 @@ services:
     restart: always
     ports:
       - "8090:8080"
-  php_test:
-    build:
-      context: .
-      dockerfile: dockerfiles/php.dockerfile
-      target: php_test
-    container_name: php_test
-    user: '${UID}:${UID}'
-    volumes:
-      - ${PROJECT_VOLUME:?err}
-      - ./config/php.ini:/usr/local/etc/php/conf.d/custom.ini
-  composer:
-    build:
-      context: .
-      dockerfile: dockerfiles/php.dockerfile
-      target: php_composer
-    container_name: composer
-    user: '${UID}:${UID}'
-    volumes:
-      - ${PROJECT_VOLUME:?err}
-      - ./.composer:/.composer
-      - ./config/php.ini:/usr/local/etc/php/conf.d/custom.ini
-    entrypoint: [ "composer", "--ignore-platform-reqs" ]
-  artisan:
-    build:
-      context: .
-      dockerfile: dockerfiles/php.dockerfile
-      target: php_artisan
-    container_name: artisan
-    user: '${UID}:${UID}'
-    volumes:
-      - ${PROJECT_VOLUME:?err}
-    entrypoint: [ "php", "${WORKING_DIR:?err}/artisan" ]
   npm:
     image: node:18
     container_name: npm
