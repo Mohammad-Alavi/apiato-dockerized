@@ -11,3 +11,5 @@
 postgres/data/
 !config
 !README.md
+!.bash_aliases
+!set_work_dir.sh

@@ -1,0 +1,36 @@
+#!/bin/bash
+
+# Get the current directory name using ${PWD##*/}
+CURRENT_DIR="${PWD##*/}"
+
+# Get the values for OS_USER and UID for the current user
+OS_USER=$(whoami)
+UID=$(id -u)
+
+# Define an associative array to map variable names to their values
+declare -A VAR_VALUES=(
+  ["PROJECT_FOLDER_NAME"]=$CURRENT_DIR
+  ["PROJECT_VOLUME"]="./$CURRENT_DIR:/var/www/html"
+  ["WORKING_DIR"]="/var/www/html"
+  ["OS_USER"]=$OS_USER
+  ["UID"]=$UID
+)
+
+# Define the path to your .env file
+ENV_FILE="$HOME/backend/.env"
+
+# Check if the .env file exists
+if [ -e "$ENV_FILE" ]; then
+  # Loop through the associative array and replace variable values
+  for VAR_NAME in "${!VAR_VALUES[@]}"; do
+    VAR_VALUE="${VAR_VALUES[$VAR_NAME]}"
+    sed -i "s^$VAR_NAME=.*^$VAR_NAME=$VAR_VALUE^" "$ENV_FILE"
+    if [ $? -eq 0 ]; then
+      echo "Variable $VAR_NAME in $ENV_FILE has been updated to $VAR_VALUE"
+    else
+      echo "Error: Failed to update variable $VAR_NAME in $ENV_FILE"
+    fi
+  done
+else
+  echo "Error: $ENV_FILE does not exist."
+fi
