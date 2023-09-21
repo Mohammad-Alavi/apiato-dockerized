@@ -1,11 +1,11 @@
 version: "3.8"
-
+name: ${PROJECT_FOLDER_NAME:-apiato}
 services:
   server:
     build:
       context: .
       dockerfile: dockerfiles/nginx.dockerfile
-    container_name: nginx
+    container_name: ${PROJECT_FOLDER_NAME}_nginx
     ports:
       - '80:80'
     volumes:
@@ -16,7 +16,7 @@ services:
       - postgres
   php:
     image: masmikh/php_base:latest
-    container_name: php
+    container_name: ${PROJECT_FOLDER_NAME}_php
     user: '${UID}:${UID}'
     volumes:
       - ${PROJECT_VOLUME:?err}
@@ -28,7 +28,7 @@ services:
       dockerfile: dockerfiles/php.dockerfile
       target: php_debug
     image: masmikh/php_debug:latest
-    container_name: php_debug
+    container_name: ${PROJECT_FOLDER_NAME}_php_debug
     user: '${UID}:${UID}'
     volumes:
       - ${PROJECT_VOLUME:?err}
@@ -36,14 +36,14 @@ services:
       - ./config/php.ini:/usr/local/etc/php/conf.d/custom.ini
   mysql:
     image: mysql:5.7
-    container_name: mysql
+    container_name: ${PROJECT_FOLDER_NAME}_mysql
     ports:
       - "3306:3306"
     env_file:
       - ./mysql/mysql.env
   postgres:
     image: ghcr.io/baosystems/postgis:14-3.3
-    container_name: postgres
+    container_name: ${PROJECT_FOLDER_NAME}_postgres
     restart: always
     user: '${UID}:${UID}'
     env_file:
@@ -62,20 +62,20 @@ services:
       - "max_locks_per_transaction=1024"
   adminer:
     image: adminer
-    container_name: adminer
+    container_name: ${PROJECT_FOLDER_NAME}_adminer
     restart: always
     ports:
       - "8090:8080"
   npm:
     image: node:18
-    container_name: npm
+    container_name: ${PROJECT_FOLDER_NAME}_npm
     working_dir: ${WORKING_DIR:?err}
     entrypoint: [ "npm" ]
     volumes:
       - ${PROJECT_VOLUME:?err}
   node:
     image: node:18
-    container_name: node
+    container_name: ${PROJECT_FOLDER_NAME}_node
     working_dir: ${WORKING_DIR:?err}
     volumes:
       - ${PROJECT_VOLUME:?err}
