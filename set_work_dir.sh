@@ -1,5 +1,11 @@
 #!/bin/bash
 
+# Get the path of the current script
+script_path="${BASH_SOURCE[0]}"
+
+# Convert Windows-style line endings to Unix-style line endings
+sed -i 's/\r$//' "$script_path"
+
 # Get the current directory name using ${PWD##*/}
 CURRENT_DIR="${PWD##*/}"
 
