@@ -18,6 +18,7 @@ services:
     image: masmikh/php_base:latest
     container_name: ${PROJECT_FOLDER_NAME}_php
     user: '${UID}:${UID}'
+    working_dir: ${WORKING_DIR:?err}
     volumes:
       - ${PROJECT_VOLUME:?err}
       - ./.composer:/.composer
@@ -30,6 +31,7 @@ services:
     image: masmikh/php_debug:latest
     container_name: ${PROJECT_FOLDER_NAME}_php_debug
     user: '${UID}:${UID}'
+    working_dir: ${WORKING_DIR:?err}
     volumes:
       - ${PROJECT_VOLUME:?err}
       - ./.composer:/.composer
@@ -67,15 +69,17 @@ services:
     ports:
       - "8090:8080"
   npm:
-    image: node:18
+    build:
+      context: .
+      dockerfile: dockerfiles/node.dockerfile
     container_name: ${PROJECT_FOLDER_NAME}_npm
-    working_dir: ${WORKING_DIR:?err}
     entrypoint: [ "npm" ]
     volumes:
       - ${PROJECT_VOLUME:?err}
   node:
-    image: node:18
+    build:
+      context: .
+      dockerfile: dockerfiles/node.dockerfile
     container_name: ${PROJECT_FOLDER_NAME}_node
-    working_dir: ${WORKING_DIR:?err}
     volumes:
       - ${PROJECT_VOLUME:?err}

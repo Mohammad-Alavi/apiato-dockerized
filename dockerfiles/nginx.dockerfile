@@ -6,6 +6,6 @@ COPY ../config/nginx.conf .
 
 RUN mv nginx.conf default.conf
 
-WORKDIR /var/www/html
+WORKDIR /opt/project
 
 COPY ${PROJECT_FOLDER_NAME} .

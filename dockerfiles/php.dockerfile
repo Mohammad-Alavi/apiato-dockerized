@@ -3,8 +3,8 @@ LABEL maintainer="Mohammad Alavi"
 
 # Install dependencies
 COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr/local/bin/
-RUN install-php-extensions mysqli pdo_mysql pgsql pdo_pgsql gd bcmath gmp mcrypt exif imagick gettext zip intl opcache
-RUN apk add --update linux-headers && apk add --update nodejs && apk add rsync
+RUN install-php-extensions mysqli pdo_mysql pgsql pdo_pgsql gd bcmath gmp mcrypt exif imagick gettext zip intl opcache && \
+    apk add --update linux-headers && apk add --update nodejs && apk add rsync
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 # add the opcache configuration file

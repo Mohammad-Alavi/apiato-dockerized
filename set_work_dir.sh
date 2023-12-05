@@ -16,8 +16,8 @@ UID=$(id -u)
 # Define an associative array to map variable names to their values
 declare -A VAR_VALUES=(
   ["PROJECT_FOLDER_NAME"]=$CURRENT_DIR
-  ["PROJECT_VOLUME"]="./$CURRENT_DIR:/var/www/html"
-  ["WORKING_DIR"]="/var/www/html"
+  ["PROJECT_VOLUME"]="./$CURRENT_DIR:/opt/project"
+  ["WORKING_DIR"]="/opt/project"
   ["OS_USER"]=$OS_USER
   ["UID"]=$UID
 )
