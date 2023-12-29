@@ -27,3 +27,6 @@ DB_PASSWORD=secret
 #### Note to myself:
 Build the base_php image:  
 `docker build -f dockerfiles/php.dockerfile --tag=masmikh/php_base:latest --target=php_base .`
+
+#### If you have problems with permissions:
+https://stackoverflow.com/questions/74197633/phpstorm-can-not-save-files-unable-to-open-the-file-for-writing
