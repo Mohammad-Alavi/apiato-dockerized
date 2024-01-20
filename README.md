@@ -25,8 +25,43 @@ DB_PASSWORD=secret
 ```
 
 #### Note to myself:
+Update the tag and PHP_VER (php81, php82) to create an image with a different PHP version.
 Build the base_php image:  
-`docker build -f dockerfiles/php.dockerfile --tag=masmikh/php_base:latest --target=php_base .`
+```bash
+docker build -f dockerfiles/php.dockerfile --tag=masmikh/php82:latest --target=php_base . --build-arg 'PHP_VER=php82'
+````
+
+If you get this error:  
+```bash
+ERROR: failed to solve: DeadlineExceeded: DeadlineExceeded: DeadlineExceeded: php:8.1.0-fpm-alpine: failed to authorize: DeadlineExceeded: failed to fetch oauth token: Post "https://auth.docker.io/token": dial tcp 34.226.69.105:443: i/o timeout
+```
+It means you have to pull in all required/used images first:  
+```bash
+docker pull php:8.1.0-fpm-alpine
+docker pull composer:latest
+docker pull mlocati/php-extension-installer:latest
+```
+etc...
 
 #### If you have problems with permissions:
 https://stackoverflow.com/questions/74197633/phpstorm-can-not-save-files-unable-to-open-the-file-for-writing
+
+use this link to set permissions:  
+https://stackoverflow.com/questions/73672857/how-to-run-postgres-in-docker-as-non-root-user
+
+https://www.baeldung.com/linux/check-user-group-privileges  
+remove all volumes and docker-compose down/up  
+groups  
+if docker is not in the list, then:  
+sudo groupadd docker  
+groups melkor  
+id melkor  
+> Here is what we have:  
+uid=1000 shows the user’s unique identifier (UID)
+gid=1000 indicates the user’s primary group identifier (GID)
+groups=1000(eric),4(adm),24(cdrom),27(sudo),30(dip),46(plugdev),116(lpadmin) displays all the groups that the user belongs to. Each group is represented by its GID, and its name is shown in parentheses. As we can see, the user eric belongs to several groups, including adm, cdrom, sudo, dip, plugdev, and lpadmin.
+
+sudo usermod -aG docker melkor
+
+sudo chmod g+rw filename  
+sudo chmod -R g+rw mydirectory/ 
