@@ -1,4 +1,5 @@
 ARG PHP_VER=php81
+ENV PHP_VER=${PHP_VER}
 
 FROM php:8.1.0-fpm-alpine AS php81_base
 
@@ -20,6 +21,14 @@ FROM masmikh/php81:latest AS php81_debug
 RUN install-php-extensions xdebug
 ENV XDEBUG_MODE=debug
 ENV XDEBUG_CONFIG="client_host=host.docker.internal client_port=9003"
+
+# If you want to use this image as a production image, you can copy the project files to the container
+# Install the dependencies (should this be done in nginx or php image? or both? or neither?)
+#COPY package.json package-lock.json composer.json composer.lock ./
+#RUN npm install && composer install
+# We dont need composer in those php images. Do we? Can workflows like Github actions take caer of that? I think they already do.
+#WORKDIR ${WORKING_DIR}
+#COPY ${PROJECT_FOLDER_NAME} .
 
 # Examples of conditional commands, kept for later
 #ARG install_node=0

@@ -65,3 +65,7 @@ sudo usermod -aG docker melkor
 
 sudo chmod g+rw filename  
 sudo chmod -R g+rw mydirectory/ 
+
+#### Production
+You have to copy the source code files into the container.
+You can uncomment the copy codes in the nginx and php dockerfiles.

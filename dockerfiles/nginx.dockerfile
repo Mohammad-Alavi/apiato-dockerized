@@ -8,8 +8,8 @@ COPY ../config/nginx.conf /etc/nginx/templates/nginx.conf.template
 
 EXPOSE 80
 
-RUN #mv nginx.conf default.conf
+#RUN mv nginx.conf default.conf
 
-WORKDIR /opt/project
-
-COPY ${PROJECT_FOLDER_NAME} .
+# If you want to use this image as a production image, you can copy the project files to the container
+#WORKDIR ${WORKING_DIR}
+#COPY ${PROJECT_FOLDER_NAME} .

@@ -2,8 +2,8 @@
 
 !dockerfiles
 .env
-!.env.example
-!.gitignore
+!.env.*
+!.*ignore
 !docker-compose.yaml
 !LICENSE
 !mysql/
