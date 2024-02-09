@@ -1,7 +1,7 @@
-FROM node:18
+FROM node:latest
 
 VOLUME /root/.npm
 
-WORKDIR /opt/project
+WORKDIR ${WORKING_DIR}
 
 COPY ../config/.npmrc /root/.npmrc
