@@ -32,9 +32,9 @@ if [ -e "$ENV_FILE" ]; then
     VAR_VALUE="${VAR_VALUES[$VAR_NAME]}"
     sed -i "s^$VAR_NAME=.*^$VAR_NAME=$VAR_VALUE^" "$ENV_FILE"
     if [ $? -eq 0 ]; then
-      echo "Variable $VAR_NAME in $ENV_FILE has been updated to $VAR_VALUE"
+      echo "$ENV_FILE: $VAR_NAME => $VAR_VALUE"
     else
-      echo "Error: Failed to update variable $VAR_NAME in $ENV_FILE"
+      echo "Error: Failed to update $ENV_FILE: $VAR_NAME"
     fi
   done
 else
