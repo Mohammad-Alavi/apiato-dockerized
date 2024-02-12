@@ -16,7 +16,6 @@ COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr
 RUN install-php-extensions mysqli pdo_mysql pgsql pdo_pgsql gd bcmath gmp mcrypt exif imagick gettext zip intl opcache && \
     apk add --update linux-headers && apk add --update nodejs && apk add rsync
 
-
 FROM masmikh/php81:latest AS php81_debug
 RUN install-php-extensions xdebug
 ENV XDEBUG_MODE=debug
