@@ -82,6 +82,7 @@ services:
       context: .
       dockerfile: dockerfiles/node.dockerfile
     container_name: ${PROJECT_FOLDER_NAME}_npm
+    working_dir: ${WORKING_DIR:?err}
     entrypoint: [ "npm" ]
     volumes:
       - ${PROJECT_VOLUME:?err}:delegated
@@ -90,5 +91,6 @@ services:
       context: .
       dockerfile: dockerfiles/node.dockerfile
     container_name: ${PROJECT_FOLDER_NAME}_node
+    working_dir: ${WORKING_DIR:?err}
     volumes:
       - ${PROJECT_VOLUME:?err}:delegated
