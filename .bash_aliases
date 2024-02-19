@@ -1,4 +1,7 @@
-alias dc='setdir && php_ver docker-compose'
+# Set the work directory and load the aliases to the current shell session
+# This aliast should be sourced in the ~/bash_aliases, .bashrc or .zshrc file
+# alias setdir='source $HOME/backend/set_work_dir.sh && source $HOME/backend/.bash_aliases'
+alias dc='php_ver docker-compose --env-file=`pwd`/.env.docker'
 alias dcr='dc run'
 alias dcu='dc up'
 alias dcud='dc up -d'
@@ -27,4 +30,3 @@ alias puc='php ./vendor/bin/phpunit --list-tests | wc -l'
 alias puwchtml='php_debug -e XDEBUG_MODE=coverage ./vendor/bin/phpunit'
 alias phpfixer='php ./vendor/bin/php-cs-fixer fix'
 alias psalm='php ./vendor/bin/psalm --config=psalm.xml'
-alias setdir='$HOME/backend/set_work_dir.sh'

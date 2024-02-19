@@ -23,6 +23,15 @@ DB_DATABASE=postgres
 DB_USERNAME=homestead
 DB_PASSWORD=secret
 ```
+#### Add this to your ~/.bash_aliases, ~/.bashrc or ~/.zshrc
+```bash
+alias setdir='source $HOME/backend/set_work_dir.sh && source $HOME/backend/.bash_aliases'
+```
+Then close and open the terminal. Now list the aliases with the command:
+```bash
+alias
+```
+If you see the `composer` alias, then you are good to go.
 
 #### Note to myself:
 Update the tag and PHP_VER (php81, php82) to create an image with a different PHP version.

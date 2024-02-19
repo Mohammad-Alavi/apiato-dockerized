@@ -1,40 +1,43 @@
 version: "3.8"
-name: ${PROJECT_FOLDER_NAME:-apiato}
+name: ${PROJECT_FOLDER_NAME:?err}
 services:
   server:
     build:
       context: .
       dockerfile: dockerfiles/nginx.dockerfile
-    container_name: ${PROJECT_FOLDER_NAME}_nginx
+    container_name: ${PROJECT_FOLDER_NAME:?err}_nginx
     ports:
       - "80:80"
       - "443:443"
     volumes:
-      - ${PROJECT_VOLUME:?err}:delegated
+      - ${PROJECT_VOLUME:?err}
 #      - ./config/nginx.conf:/etc/nginx/conf.d/default.conf:ro
       - ./config/nginx.conf:/etc/nginx/templates/nginx.conf.template
     environment:
       NGINX_ENVSUBST_OUTPUT_DIR: /etc/nginx
       PHP_HOST: ${PHP_VER:?err}
+    env_file:
+      - .env
+      - "${PROJECT_FOLDER_NAME:?err}/.env.docker"
     depends_on:
       - ${PHP_VER:?err}
       - postgres
   php81:
     image: masmikh/php81:latest
-    container_name: ${PROJECT_FOLDER_NAME}_php81
+    container_name: ${PROJECT_FOLDER_NAME:?err}_php81
     user: '${UID}:${UID}'
     working_dir: ${WORKING_DIR:?err}
     volumes:
-      - ${PROJECT_VOLUME:?err}:delegated
+      - ${PROJECT_VOLUME:?err}
       - ./.composer:/.composer
       - ./config/php.ini:/usr/local/etc/php/conf.d/custom.ini
   php82:
     image: masmikh/php82:latest
-    container_name: ${PROJECT_FOLDER_NAME}_php82
+    container_name: ${PROJECT_FOLDER_NAME:?err}_php82
     user: '${UID}:${UID}'
     working_dir: ${WORKING_DIR:?err}
     volumes:
-      - ${PROJECT_VOLUME:?err}:delegated
+      - ${PROJECT_VOLUME:?err}
       - ./.composer:/.composer
       - ./config/php.ini:/usr/local/etc/php/conf.d/custom.ini
   php81_debug:
@@ -43,23 +46,23 @@ services:
       dockerfile: php.dockerfile
       target: php81_debug
     image: masmikh/php81_debug:latest
-    container_name: ${PROJECT_FOLDER_NAME}_php81_debug
+    container_name: ${PROJECT_FOLDER_NAME:?err}_php81_debug
     user: '${UID}:${UID}'
     working_dir: ${WORKING_DIR:?err}
     volumes:
-      - ${PROJECT_VOLUME:?err}:delegated
+      - ${PROJECT_VOLUME:?err}
       - ./.composer:/.composer
       - ./config/php.ini:/usr/local/etc/php/conf.d/custom.ini
   mysql:
     image: mysql:5.7
-    container_name: ${PROJECT_FOLDER_NAME}_mysql
+    container_name: ${PROJECT_FOLDER_NAME:?err}_mysql
     ports:
       - "3306:3306"
     env_file:
       - mysql/mysql.env
   postgres:
     image: postgres:latest
-    container_name: ${PROJECT_FOLDER_NAME}_postgres
+    container_name: ${PROJECT_FOLDER_NAME:?err}_postgres
     restart: always
     user: '${UID}:${UID}'
     env_file:
@@ -73,7 +76,7 @@ services:
       - "5432:5432"
   adminer:
     image: adminer
-    container_name: ${PROJECT_FOLDER_NAME}_adminer
+    container_name: ${PROJECT_FOLDER_NAME:?err}_adminer
     restart: always
     ports:
       - "8090:8080"
@@ -81,16 +84,16 @@ services:
     build:
       context: .
       dockerfile: dockerfiles/node.dockerfile
-    container_name: ${PROJECT_FOLDER_NAME}_npm
+    container_name: ${PROJECT_FOLDER_NAME:?err}_npm
     working_dir: ${WORKING_DIR:?err}
     entrypoint: [ "npm" ]
     volumes:
-      - ${PROJECT_VOLUME:?err}:delegated
+      - ${PROJECT_VOLUME:?err}
   node:
     build:
       context: .
       dockerfile: dockerfiles/node.dockerfile
-    container_name: ${PROJECT_FOLDER_NAME}_node
+    container_name: ${PROJECT_FOLDER_NAME:?err}_node
     working_dir: ${WORKING_DIR:?err}
     volumes:
-      - ${PROJECT_VOLUME:?err}:delegated
+      - ${PROJECT_VOLUME:?err}
