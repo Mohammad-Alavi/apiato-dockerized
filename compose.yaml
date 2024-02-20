@@ -1,5 +1,4 @@
-version: "3.8"
-name: ${PROJECT_FOLDER_NAME:?err}
+name: '${PROJECT_FOLDER_NAME:?err}'
 services:
   server:
     build:
@@ -80,16 +79,7 @@ services:
     restart: always
     ports:
       - "8090:8080"
-  npm:
-    build:
-      context: .
-      dockerfile: dockerfiles/node.dockerfile
-    container_name: ${PROJECT_FOLDER_NAME:?err}_npm
-    working_dir: ${WORKING_DIR:?err}
-    entrypoint: [ "npm" ]
-    volumes:
-      - ${PROJECT_VOLUME:?err}
-  node:
+  node: &node
     build:
       context: .
       dockerfile: dockerfiles/node.dockerfile
@@ -97,3 +87,11 @@ services:
     working_dir: ${WORKING_DIR:?err}
     volumes:
       - ${PROJECT_VOLUME:?err}
+  npm:
+    <<: *node
+    container_name: ${PROJECT_FOLDER_NAME:?err}_npm
+    entrypoint: [ "npm" ]
+  pnpm:
+    <<: *node
+    container_name: ${PROJECT_FOLDER_NAME:?err}_pnpm
+    entrypoint: [ "pnpm" ]
