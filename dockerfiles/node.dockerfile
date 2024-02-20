@@ -1,7 +1,9 @@
-FROM node:latest
+FROM node:21.6.2-slim
+
+ENV PNPM_HOME="/pnpm"
+ENV PATH="$PNPM_HOME:$PATH"
+RUN corepack enable
 
 VOLUME /root/.npm
-
-WORKDIR ${WORKING_DIR}
 
 COPY ../config/.npmrc /root/.npmrc
