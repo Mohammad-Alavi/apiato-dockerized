@@ -1,4 +1,13 @@
 name: '${PROJECT_FOLDER_NAME:?err}'
+
+x-php: &php
+  user: '${UID}:${UID}'
+  working_dir: ${WORKING_DIR:?err}
+  volumes:
+    - ${PROJECT_VOLUME:?err}
+    - ./.composer:/.composer
+    - ./config/php.ini:/usr/local/etc/php/conf.d/custom.ini
+
 services:
   server:
     build:
@@ -24,21 +33,11 @@ services:
   php81:
     image: masmikh/php81:latest
     container_name: ${PROJECT_FOLDER_NAME:?err}_php81
-    user: '${UID}:${UID}'
-    working_dir: ${WORKING_DIR:?err}
-    volumes:
-      - ${PROJECT_VOLUME:?err}
-      - ./.composer:/.composer
-      - ./config/php.ini:/usr/local/etc/php/conf.d/custom.ini
+    <<: *php
   php82:
     image: masmikh/php82:latest
     container_name: ${PROJECT_FOLDER_NAME:?err}_php82
-    user: '${UID}:${UID}'
-    working_dir: ${WORKING_DIR:?err}
-    volumes:
-      - ${PROJECT_VOLUME:?err}
-      - ./.composer:/.composer
-      - ./config/php.ini:/usr/local/etc/php/conf.d/custom.ini
+    <<: *php
   php81_debug:
     build:
       context: dockerfiles
@@ -46,12 +45,7 @@ services:
       target: php81_debug
     image: masmikh/php81_debug:latest
     container_name: ${PROJECT_FOLDER_NAME:?err}_php81_debug
-    user: '${UID}:${UID}'
-    working_dir: ${WORKING_DIR:?err}
-    volumes:
-      - ${PROJECT_VOLUME:?err}
-      - ./.composer:/.composer
-      - ./config/php.ini:/usr/local/etc/php/conf.d/custom.ini
+    <<: *php
   mysql:
     image: mysql:5.7
     container_name: ${PROJECT_FOLDER_NAME:?err}_mysql
