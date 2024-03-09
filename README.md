@@ -41,8 +41,10 @@ If you see the `composer` alias, then you are good to go.
 #### Note to myself:
 Update the tag and PHP_VER (php81, php82) to create an image with a different PHP version.
 Build the base_php image:  
+cd into backend folder and run this command:  
+You don't need to change the `--target` value -> base_name
 ```bash
-docker build -f dockerfiles/php.dockerfile --tag=masmikh/php82:latest --target=php_base . --build-arg 'PHP_VER=php82'
+docker build -f dockerfiles/php.dockerfile --tag=masmikh/php81:latest --target=php_base . --build-arg 'PHP_VER=php81'
 ````
 
 If you get this error:  

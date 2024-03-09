@@ -13,8 +13,11 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 COPY ./config/opcache.ini "$PHP_INI_DIR/conf.d/opcache.ini"
 # install php extensions
 COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr/local/bin/
-RUN install-php-extensions mysqli pdo_mysql pgsql pdo_pgsql gd bcmath gmp mcrypt exif imagick gettext zip intl opcache && \
-    apk add --update linux-headers && apk add --update nodejs && apk add rsync
+RUN apk upgrade \
+    && apk add --no-cache wget \
+    && wget --no-check-certificate "https://pecl.php.net" \
+    && install-php-extensions mysqli pdo_mysql pgsql pdo_pgsql gd bcmath gmp mcrypt exif imagick gettext zip intl opcache \
+    && apk add --update linux-headers && apk add --update nodejs && apk add rsync
 
 FROM masmikh/php81:latest AS php81_debug
 RUN install-php-extensions xdebug

@@ -17,6 +17,7 @@ OS_UID=$(id -u)
 
 # Define an associative array to map variable names to their values
 declare -A VAR_VALUES=(
+  ["COMPOSE_PROJECT_NAME"]=$CURRENT_DIR_NAME
   ["PROJECT_FOLDER_NAME"]=$CURRENT_DIR_NAME
   ["PROJECT_VOLUME"]="./$CURRENT_DIR_NAME:/opt/project"
   ["WORKING_DIR"]="/opt/project"
@@ -26,6 +27,8 @@ declare -A VAR_VALUES=(
 
 # Define the path to your .env file
 ENV_FILE="$CURRENT_DIR_PATH/.env.docker"
+# move up 1 directory from current directory and set the .env file
+MAIN_ENV_FILE="$CURRENT_DIR_PATH/../.env"
 
 # Create the .env file if it does not exist
 if [ ! -e "$ENV_FILE" ]; then
@@ -53,6 +56,7 @@ if [ -e "$ENV_FILE" ]; then
     OLD_VALUE=$(grep "^$VAR_NAME=" "$ENV_FILE" | cut -d '=' -f2)
     # Replace the value if the key exists
     sed -i "s^$VAR_NAME=.*^$VAR_NAME=$VAR_VALUE^" "$ENV_FILE"
+    sed -i "s^$VAR_NAME=.*^$VAR_NAME=$VAR_VALUE^" "$MAIN_ENV_FILE"
 
     # Add the key if it does not exist
     if ! grep -q "^$VAR_NAME=" "$ENV_FILE"; then

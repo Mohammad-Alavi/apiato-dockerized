@@ -4,7 +4,7 @@
 alias dc='php_ver docker compose --env-file=`pwd`/.env.docker'
 alias dcr='dc run'
 alias dcu='dc up'
-alias dcb='dc build'
+alias dcb='dc build --no-cache'
 alias dcud='dc up -d'
 alias dcd='dc down'
 alias dcrm='dcr --rm'
