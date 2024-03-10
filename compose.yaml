@@ -65,7 +65,7 @@ services:
     image: postgres:latest
     container_name: ${PROJECT_FOLDER_NAME:?err}_postgres
     restart: always
-#    user: '${UID}:${UID}'
+    user: '${UID}:${UID}'
     env_file:
       - postgres/postgres.env
     volumes:
