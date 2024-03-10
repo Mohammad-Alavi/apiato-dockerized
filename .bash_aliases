@@ -9,6 +9,7 @@ alias dcud='dc up -d'
 alias dcd='dc down'
 alias dcrm='dcr --rm'
 alias dcx='dc exec'
+alias adminer='dcr -p 8080:8080 adminer'
 alias php='php81' # Default PHP service used to run PHP commands
 alias PHP_SERVICE='PHP_SERVICE=php81' # Default PHP service used to run docker-compose commands
 alias php81='dcr --rm php81'

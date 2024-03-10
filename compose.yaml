@@ -30,6 +30,7 @@ services:
     depends_on:
       - ${PHP_SERVICE:?err}
       - postgres
+      - adminer
   php81:
     image: masmikh/php-8.1.0:latest
     container_name: ${PROJECT_FOLDER_NAME:?err}_php8.1.0
@@ -80,7 +81,7 @@ services:
     container_name: ${PROJECT_FOLDER_NAME:?err}_adminer
     restart: always
     ports:
-      - "8090:8080"
+      - 8080:8080
   node: &node
     build:
       context: .
