@@ -23,12 +23,12 @@ services:
       - ./config/nginx.conf:/etc/nginx/templates/nginx.conf.template
     environment:
       NGINX_ENVSUBST_OUTPUT_DIR: /etc/nginx
-      PHP_HOST: ${PHP_VER:?err}
+      PHP_HOST: ${PHP_SERVICE:?err}
     env_file:
       - .env
       - "${PROJECT_FOLDER_NAME:?err}/.env.docker"
     depends_on:
-      - ${PHP_VER:?err}
+      - ${PHP_SERVICE:?err}
       - postgres
   php81:
     image: masmikh/php-8.1.0:latest
