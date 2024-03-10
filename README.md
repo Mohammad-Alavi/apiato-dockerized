@@ -27,7 +27,7 @@ DB_PASSWORD=secret
 ```bash
 alias setdir='source $HOME/backend/set_work_dir.sh && source $HOME/backend/.bash_aliases'
 ```
-#### Add this at the end of your ~/.profile
+#### Add this at the end of your ~/.profile, ~/.bash_aliases, ~/.bashrc or ~/.zshrc
 This will make sure that the .bash_aliases file is loaded when you open a terminal.
 ```bash
 setdir
