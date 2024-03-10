@@ -1,7 +1,7 @@
 # Set the work directory and load the aliases to the current shell session
 # This aliast should be sourced in the ~/bash_aliases, .bashrc or .zshrc file
 # alias setdir='source $HOME/backend/set_work_dir.sh && source $HOME/backend/.bash_aliases'
-alias dc='docker compose --env-file=`pwd`/.env.docker'
+alias dc='PHP_SERVICE docker compose --env-file=`pwd`/.env.docker'
 alias dcr='dc run'
 alias dcu='dc up'
 alias dcb='dc build --no-cache'
@@ -9,7 +9,8 @@ alias dcud='dc up -d'
 alias dcd='dc down'
 alias dcrm='dcr --rm'
 alias dcx='dc exec'
-alias php='php81'
+alias php='php81' # Default PHP service used to run PHP commands
+alias PHP_SERVICE='PHP_SERVICE=php81' # Default PHP service used to run docker-compose commands
 alias php81='dcr --rm php81'
 alias php82='dcr --rm php82'
 alias php83='dcr --rm php83'
