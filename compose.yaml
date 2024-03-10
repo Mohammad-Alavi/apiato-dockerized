@@ -31,20 +31,28 @@ services:
       - ${PHP_VER:?err}
       - postgres
   php81:
-    image: masmikh/php81:latest
-    container_name: ${PROJECT_FOLDER_NAME:?err}_php81
+    image: masmikh/php-8.1.0:latest
+    container_name: ${PROJECT_FOLDER_NAME:?err}_php8.1.0
     <<: *php
   php82:
-    image: masmikh/php82:latest
-    container_name: ${PROJECT_FOLDER_NAME:?err}_php82
+    image: masmikh/php-8.2.0:latest
+    container_name: ${PROJECT_FOLDER_NAME:?err}_php8.2.0
+    <<: *php
+  php83:
+    image: masmikh/php-8.3.0:latest
+    container_name: ${PROJECT_FOLDER_NAME:?err}_php8.3.0
     <<: *php
   php81_debug:
-    build:
-      context: dockerfiles
-      dockerfile: php.dockerfile
-      target: php81_debug
-    image: masmikh/php81_debug:latest
-    container_name: ${PROJECT_FOLDER_NAME:?err}_php81_debug
+    image: masmikh/php-8.1.0-debug:latest
+    container_name: ${PROJECT_FOLDER_NAME:?err}_php8.1.0_debug
+    <<: *php
+  php82_debug:
+    image: masmikh/php-8.2.0-debug:latest
+    container_name: ${PROJECT_FOLDER_NAME:?err}_php8.2.0_debug
+    <<: *php
+  php83_debug:
+    image: masmikh/php-8.3.0-debug:latest
+    container_name: ${PROJECT_FOLDER_NAME:?err}_php8.3.0_debug
     <<: *php
   mysql:
     image: mysql:5.7

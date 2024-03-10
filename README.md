@@ -1,14 +1,14 @@
-1. create a folder named anything, e.g. apiato (this step is crucial because we need a folder with correct permission)
+> This document assumes that there is a folder named `backend` in the home directory. And the `backend` folder contains your project folder. e.g., `apiato`, `laravel`, etc...
+
+1. create a folder named anything, e.g. apiato (this step is crucial because we need a folder with the correct permission)
    > If you share a directory with a container, and the directory did not exist before running the docker command,
    docker creates the directory as the user running the daemon (usually root).
-2. create a .env file based on .env.example
-3. update the .env file -> PROJECT_FOLDER_NAME=myproject
-4. docker-compose run --rm composer create-project apiato/apiato ./
-5. composer update
-6. npm install
-7. generate docs docs
-8. remove storage/logs/laravel.log if it causes any access permission problems. or sudo chown melkor:melkor laravel.log
-9. set up the database
+2. docker-compose run --rm composer create-project apiato/apiato ./
+3. composer update
+4. npm install
+5. generate docs docs
+6. remove storage/logs/laravel.log if it causes any access permission problems. or sudo chown melkor:melkor laravel.log
+7. set up the database
 ```dotenv
 DB_CONNECTION=mysql
 DB_HOST=mysql
@@ -26,10 +26,7 @@ DB_PASSWORD=secret
 #### Add this to your ~/.bash_aliases, ~/.bashrc or ~/.zshrc
 ```bash
 alias setdir='source $HOME/backend/set_work_dir.sh && source $HOME/backend/.bash_aliases'
-```
-#### Add this at the end of your ~/.profile, ~/.bash_aliases, ~/.bashrc or ~/.zshrc
-This will make sure that the .bash_aliases file is loaded when you open a terminal.
-```bash
+# This will make sure that the .bash_aliases file is loaded when you open a terminal.
 setdir
 ```
 Then close and open the terminal. Now list the aliases with the command:
@@ -38,15 +35,26 @@ alias
 ```
 If you see the `composer` alias, then you are good to go.
 
-#### Note to myself:
-Update the tag and PHP_VER (php81, php82) to create an image with a different PHP version.
-Build the base_php image:  
-cd into backend folder and run this command:  
-You don't need to change the `--target` value -> base_name
-```bash
-docker build -f dockerfiles/php.dockerfile --tag=masmikh/php81:latest --target=php_base . --build-arg 'PHP_VER=php81'
-````
+## Building the Docker Images
+You can build new PHP images with different versions using the following command.
+But first, you have to update it according to the new version.
+1. Tag it to whatever version. e.g., `--tag=masmikh/php-8.1.0:latest`, `--tag=masmikh/php-8.2.0:latest`, etc...
+2. Change the `--build-arg 'PHP_VER=8.1.0'` to the new version. e.g., `--build-arg 'PHP_VER=8.2.0'`
 
+### Build it: 
+1. cd into `~/backend` folder
+2. run the following command:
+```bash
+docker build -f dockerfiles/php.dockerfile --tag=masmikh/php-8.1.0:latest --target=php . --build-arg 'PHP_VER=8.1.0'
+````
+Note: You don't need to change the `--target=php` because it is the same for all versions.
+
+### Build the debug image:
+```bash
+docker build -f dockerfiles/php.dockerfile --tag=masmikh/php-8.1.0-debug:latest --target=php-debug . --build-arg 'PHP_VER=8.1.0'
+```
+
+### Troubleshooting
 If you get this error:  
 ```bash
 ERROR: failed to solve: DeadlineExceeded: DeadlineExceeded: DeadlineExceeded: php:8.1.0-fpm-alpine: failed to authorize: DeadlineExceeded: failed to fetch oauth token: Post "https://auth.docker.io/token": dial tcp 34.226.69.105:443: i/o timeout
@@ -85,3 +93,9 @@ sudo chmod -R g+rw mydirectory/
 #### Production
 You have to copy the source code files into the container.
 You can uncomment the copy codes in the nginx and php dockerfiles.
+
+## Steps
+1. Pull in this repository into your home directory and rename it to `backend`.
+2. Create a folder named `apiato` (or any other name) in the `backend` folder.
+3. Build the images.
+4. Run the containers.

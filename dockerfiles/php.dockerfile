@@ -1,11 +1,7 @@
-ARG PHP_VER=php81
-ENV PHP_VER=${PHP_VER}
+ARG PHP_VER=8.1.0
 
-FROM php:8.1.0-fpm-alpine AS php81_base
+FROM php:${PHP_VER}-fpm-alpine AS php
 
-FROM php:8.2.0-fpm-alpine AS php82_base
-
-FROM ${PHP_VER}_base AS php_base
 LABEL maintainer="Mohammad Alavi"
 # Install dependencies
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
@@ -19,7 +15,7 @@ RUN apk upgrade \
     && install-php-extensions mysqli pdo_mysql pgsql pdo_pgsql gd bcmath gmp mcrypt exif imagick gettext zip intl opcache \
     && apk add --update linux-headers && apk add --update nodejs && apk add rsync
 
-FROM masmikh/php81:latest AS php81_debug
+FROM masmikh/php-${PHP_VER}:latest AS php-debug
 RUN install-php-extensions xdebug
 ENV XDEBUG_MODE=debug
 ENV XDEBUG_CONFIG="client_host=host.docker.internal client_port=9003"
