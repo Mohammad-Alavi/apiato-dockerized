@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Enable debugging and print all commands for the current shell
+# set -x
+
 # Get the path of the current script
 script_path="${BASH_SOURCE[0]}"
 
