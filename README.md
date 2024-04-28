@@ -44,13 +44,13 @@ But first, you have to update it according to the new version.
 1. cd into `~/backend` folder
 2. run the following command:
 ```bash
-docker build -f docker/dockerfiles/php.dockerfile --tag=masmikh/php-8.1.0:latest --platform linux/amd64,linux/arm64 --target=php . --build-arg 'PHP_VER=8.1.0'
+docker build -f docker/php.dockerfile --tag=masmikh/php-8.1.0:latest --platform linux/amd64,linux/arm64 --target=php . --build-arg 'PHP_VER=8.1.0'
 ````
 Note: You don't need to change the `--target=php` because it is the same for all versions.
 
 ### Build the debug image:
 ```bash
-docker build -f docker/dockerfiles/php.dockerfile --tag=masmikh/php-8.1.0-debug:latest --platform linux/amd64,linux/arm64 --target=php-debug . --build-arg 'PHP_VER=8.1.0'
+docker build -f docker/php.dockerfile --tag=masmikh/php-8.1.0-debug:latest --platform linux/amd64,linux/arm64 --target=php-debug . --build-arg 'PHP_VER=8.1.0'
 ```
 
 ## Troubleshooting
@@ -73,6 +73,10 @@ ERROR: Multi-platform build is not supported for the docker driver.
 ```
 You need to enable `contanered image store` in Docker settings.  
 https://docs.docker.com/desktop/containerd/
+
+### Failed to compute cache key
+Probably the docker image build context is causing the problem.
+Check the build context and file paths in the dockerfiles.
 
 ### Permission errors
 https://stackoverflow.com/questions/74197633/phpstorm-can-not-save-files-unable-to-open-the-file-for-writing

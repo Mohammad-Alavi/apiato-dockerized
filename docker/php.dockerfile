@@ -6,7 +6,7 @@ LABEL maintainer="Mohammad Alavi"
 # Install dependencies
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 # add the opcache configuration file
-COPY ../config/opcache.ini "$PHP_INI_DIR/conf.d/opcache.ini"
+COPY /docker/config/opcache.ini "$PHP_INI_DIR/conf.d/opcache.ini"
 # install php extensions
 COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr/local/bin/
 RUN apk upgrade \

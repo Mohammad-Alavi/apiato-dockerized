@@ -2,9 +2,9 @@ FROM nginx:stable-alpine
 
 #WORKDIR /etc/nginx/conf.d
 
-#COPY ../config/nginx.conf .
+#COPY /docker/config/nginx.conf .
 #https://stackoverflow.com/questions/72748706/how-to-pass-environment-variable-to-nginx-conf-file-in-docker
-COPY ../config/nginx.conf /etc/nginx/templates/nginx.conf.template
+COPY /docker/config/nginx.conf /etc/nginx/templates/nginx.conf.template
 
 EXPOSE 80
 

@@ -6,4 +6,4 @@ RUN corepack enable
 
 VOLUME /root/.npm
 
-COPY ../config/.npmrc /root/.npmrc
+COPY config/.npmrc /root/.npmrc
