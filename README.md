@@ -75,7 +75,8 @@ You need to enable `contanered image store` in Docker settings.
 https://docs.docker.com/desktop/containerd/
 
 ### Failed to compute cache key
-Probably the docker image build context is causing the problem.
+Probably the docker image build context is causing the problem.  
+In short: _wrong file path relative to build context._  
 Check the build context and file paths in the dockerfiles.
 
 ### Permission errors
