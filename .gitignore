@@ -1,16 +1,13 @@
 /*
 
-!dockerfiles
 .env
-!.env.*
+.env.*
+!.env.example
 !.*ignore
 !compose.yaml
-!docker-compose.yaml
-!LICENSE
-!mysql/
-!postgres/
-postgres/data/
-!config
-!README.md
 !.bash_aliases
 !set_work_dir.sh
+!docker
+docker/postgres/data/
+!LICENSE
+!README.md
