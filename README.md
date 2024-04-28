@@ -44,29 +44,37 @@ But first, you have to update it according to the new version.
 1. cd into `~/backend` folder
 2. run the following command:
 ```bash
-docker build -f dockerfiles/php.dockerfile --tag=masmikh/php-8.1.0:latest --target=php . --build-arg 'PHP_VER=8.1.0'
+docker build -f docker/dockerfiles/php.dockerfile --tag=masmikh/php-8.1.0:latest --platform linux/amd64,linux/arm64 --target=php . --build-arg 'PHP_VER=8.1.0'
 ````
 Note: You don't need to change the `--target=php` because it is the same for all versions.
 
 ### Build the debug image:
 ```bash
-docker build -f dockerfiles/php.dockerfile --tag=masmikh/php-8.1.0-debug:latest --target=php-debug . --build-arg 'PHP_VER=8.1.0'
+docker build -f docker/dockerfiles/php.dockerfile --tag=masmikh/php-8.1.0-debug:latest --platform linux/amd64,linux/arm64 --target=php-debug . --build-arg 'PHP_VER=8.1.0'
 ```
 
-### Troubleshooting
-If you get this error:  
+## Troubleshooting
+### DeadlineExceeded 
 ```bash
 ERROR: failed to solve: DeadlineExceeded: DeadlineExceeded: DeadlineExceeded: php:8.1.0-fpm-alpine: failed to authorize: DeadlineExceeded: failed to fetch oauth token: Post "https://auth.docker.io/token": dial tcp 34.226.69.105:443: i/o timeout
 ```
 It means you have to pull in all required/used images first:  
 ```bash
-docker pull php:8.1.0-fpm-alpine
+docker pull php:8.1.0-fpm-alpine # this is for amd64
+docker pull php:8.1.0-fpm-alpine --platform=linux/arm64
 docker pull composer:latest
 docker pull mlocati/php-extension-installer:latest
 ```
 etc...
 
-#### If you have problems with permissions:
+### Multi-platform build is not supported
+```bash
+ERROR: Multi-platform build is not supported for the docker driver.
+```
+You need to enable `contanered image store` in Docker settings.  
+https://docs.docker.com/desktop/containerd/
+
+### Permission errors
 https://stackoverflow.com/questions/74197633/phpstorm-can-not-save-files-unable-to-open-the-file-for-writing
 
 use this link to set permissions:  
@@ -93,7 +101,7 @@ sudo chmod -R g+rw mydirectory/
 You have to copy the source code files into the container.
 You can uncomment the copy codes in the nginx and php dockerfiles.
 
-## Steps
+## TL;DR
 1. Pull in this repository into your home directory and rename it to `backend`.
 2. Create a folder named `apiato` (or any other name) in the `backend` folder.
 3. Build the images.
