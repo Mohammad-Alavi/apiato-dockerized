@@ -23,11 +23,10 @@ DB_DATABASE=postgres
 DB_USERNAME=homestead
 DB_PASSWORD=secret
 ```
-#### Add this to your ~/.bash_aliases, ~/.bashrc or ~/.zshrc
+#### Add this to your ~/.profile, ~/.bashrc or ~/.zshrc
+Update the `/$HOME/backend` to the path where you cloned this repository.
 ```bash
-alias setdir='source $HOME/backend/set_work_dir.sh && source $HOME/backend/.bash_aliases'
-# This will make sure that the .bash_aliases file is loaded when you open a terminal.
-setdir
+. $HOME/backend/set_work_dir.sh && . $HOME/backend/.bash_aliases
 ```
 Then close and open the terminal. Now list the aliases with the command:
 ```bash
@@ -99,3 +98,13 @@ You can uncomment the copy codes in the nginx and php dockerfiles.
 2. Create a folder named `apiato` (or any other name) in the `backend` folder.
 3. Build the images.
 4. Run the containers.
+
+#### Tips
+If you want to be able to have local aliases in your project, you can add the following code to your `~/.bashrc` or `~/.zshrc` file.
+This code will source the `.aliases` file (if exists) in your project folder when you open a terminal in your project folder.
+```bash
+function cd () { 
+  builtin cd "$@" && [[ -f .aliases ]] && . .aliases
+  return 0
+}
+```
