@@ -102,7 +102,7 @@ sudo usermod -aG docker melkor
 sudo chmod g+rw filename  
 sudo chmod -R g+rw mydirectory/ 
 
-#### Production
+## Production
 You have to copy the source code files into the container.
 You can uncomment the copy codes in the nginx and php dockerfiles.
 
@@ -112,7 +112,8 @@ You can uncomment the copy codes in the nginx and php dockerfiles.
 3. Build the images.
 4. Run the containers.
 
-#### Tips
+## Tips
+### #1
 If you want to be able to have local aliases in your project, you can add the following code to your `~/.bashrc` or `~/.zshrc` file.
 This code will source the `.aliases` file (if exists) in your project folder when you open a terminal in your project folder.
 ```bash
@@ -121,3 +122,10 @@ function cd () {
   return 0
 }
 ```
+
+## For macOS
+### Outdated bash
+MacOS bash version is old and it uses `zsh` by default now.  
+Follow this guide to update your bash to the latest version.  
+https://stackoverflow.com/questions/77052638/changing-default-shell-from-zsh-to-bash-on-macos-catalina-and-beyond
+
