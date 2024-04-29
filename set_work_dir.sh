@@ -6,8 +6,14 @@
 # Get the path of the current script
 SCRIPT_PATH="${BASH_SOURCE[0]}"
 
+SED_FLAG="-i"
+# Check for macOS and use the appropriate sed command flag
+if [[ "$OSTYPE" == "darwin"* ]]; then
+  SED_FLAG="-i ''"
+fi
+
 # Convert Windows-style line endings to Unix-style line endings
-sed -i '' 's/\r$//' "$SCRIPT_PATH"
+sed $SED_FLAG 's/\r$//' "$SCRIPT_PATH"
 
 # Get the current directory name using ${pwd##*/}
 CURRENT_DIR_NAME="${PWD##*/}"
@@ -75,8 +81,8 @@ if [ -e "$DOCKER_ENV_FILE" ]; then
     VAR_VALUE="${DYNAMIC_ENV_VARS[$VAR_NAME]}"
     OLD_VALUE=$(grep "^$VAR_NAME=" "$DOCKER_ENV_FILE" | cut -d '=' -f2)
     # Replace the value if the key exists
-    sed -i '' "s^$VAR_NAME=.*^$VAR_NAME=$VAR_VALUE^" "$DOCKER_ENV_FILE"
-    sed -i '' "s^$VAR_NAME=.*^$VAR_NAME=$VAR_VALUE^" "$ENV_FILE"
+    sed $SED_FLAG "s^$VAR_NAME=.*^$VAR_NAME=$VAR_VALUE^" "$DOCKER_ENV_FILE"
+    sed $SED_FLAG "s^$VAR_NAME=.*^$VAR_NAME=$VAR_VALUE^" "$ENV_FILE"
 
     # Add the key if it does not exist in the .env.docker file
     if ! grep -q "^$VAR_NAME=" "$DOCKER_ENV_FILE"; then
