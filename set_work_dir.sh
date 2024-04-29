@@ -1,4 +1,4 @@
-#!/bin/bash
+# #!/bin/bash
 
 # Enable debugging and print all commands for the current shell
 # set -x
@@ -7,7 +7,7 @@
 script_path="${BASH_SOURCE[0]}"
 
 # Convert Windows-style line endings to Unix-style line endings
-sed -i 's/\r$//' "$script_path"
+sed -i '' 's/\r$//' "$script_path"
 
 # Get the current directory name using ${pwd##*/}
 CURRENT_DIR_NAME="${PWD##*/}"
@@ -29,54 +29,54 @@ declare -A VAR_VALUES=(
 )
 
 # Define the path to your .env file
-ENV_FILE="$CURRENT_DIR_PATH/.env.docker"
+DOCKER_ENV_FILE="$CURRENT_DIR_PATH/.env.docker"
 # move up 1 directory from current directory and set the .env file
-MAIN_ENV_FILE="$CURRENT_DIR_PATH/../.env"
+ENV_FILE="$CURRENT_DIR_PATH/../.env"
 
 # Create the .env file if it does not exist
-if [ ! -e "$ENV_FILE" ]; then
-  touch "$ENV_FILE"
+if [ ! -e "$DOCKER_ENV_FILE" ]; then
+  touch "$DOCKER_ENV_FILE"
   if [ $? -eq 0 ]; then
-    echo "Created $ENV_FILE"
+    echo "Created $DOCKER_ENV_FILE"
   else
-    echo "Error: Failed to create $ENV_FILE"
+    echo "Error: Failed to create $DOCKER_ENV_FILE"
   fi
 fi
 
 # Check if the .env file is readable and writable
-if [ ! -r "$ENV_FILE" ] || [ ! -w "$ENV_FILE" ]; then
+if [ ! -r "$DOCKER_ENV_FILE" ] || [ ! -w "$DOCKER_ENV_FILE" ]; then
   # Make sure the .env file is writable
-  echo "Setting permissions for $ENV_FILE"
-  sudo chmod 777 "$ENV_FILE"
-  sudo chown "$OS_USER:$OS_USER" "$ENV_FILE"
+  echo "Setting permissions for $DOCKER_ENV_FILE"
+  sudo chmod 777 "$DOCKER_ENV_FILE"
+  sudo chown "$OS_USER:$OS_USER" "$DOCKER_ENV_FILE"
 fi
 
 # Check if the .env file exists
-if [ -e "$ENV_FILE" ]; then
+if [ -e "$DOCKER_ENV_FILE" ]; then
   # Loop through the associative array and replace variable values
   for VAR_NAME in "${!VAR_VALUES[@]}"; do
     VAR_VALUE="${VAR_VALUES[$VAR_NAME]}"
-    OLD_VALUE=$(grep "^$VAR_NAME=" "$ENV_FILE" | cut -d '=' -f2)
+    OLD_VALUE=$(grep "^$VAR_NAME=" "$DOCKER_ENV_FILE" | cut -d '=' -f2)
     # Replace the value if the key exists
-    sed -i "s^$VAR_NAME=.*^$VAR_NAME=$VAR_VALUE^" "$ENV_FILE"
-    sed -i "s^$VAR_NAME=.*^$VAR_NAME=$VAR_VALUE^" "$MAIN_ENV_FILE"
+    sed -i '' "s^$VAR_NAME=.*^$VAR_NAME=$VAR_VALUE^" "$DOCKER_ENV_FILE"
+    sed -i '' "s^$VAR_NAME=.*^$VAR_NAME=$VAR_VALUE^" "$ENV_FILE"
 
     # Add the key if it does not exist
-    if ! grep -q "^$VAR_NAME=" "$ENV_FILE"; then
-      echo "$VAR_NAME=$VAR_VALUE" >> "$ENV_FILE"
+    if ! grep -q "^$VAR_NAME=" "$DOCKER_ENV_FILE"; then
+      echo "$VAR_NAME=$VAR_VALUE" >> "$DOCKER_ENV_FILE"
     fi
 
     # Print information about the updated variable only if the value has changed
     if [ "$OLD_VALUE" != "$VAR_VALUE" ]; then
       if [ $? -eq 0 ]; then
-        echo "$ENV_FILE: $VAR_NAME => $VAR_VALUE"
+        echo "$DOCKER_ENV_FILE: $VAR_NAME => $VAR_VALUE"
       else
-        echo "Error: Failed to update $ENV_FILE: $VAR_NAME"
+        echo "Error: Failed to update $DOCKER_ENV_FILE: $VAR_NAME"
       fi
     fi
   done
 else
-  echo "Error: $ENV_FILE does not exist."
+  echo "Error: $DOCKER_ENV_FILE does not exist."
 fi
 
 # Set the bash aliases for the current session from the .bash_aliases file
