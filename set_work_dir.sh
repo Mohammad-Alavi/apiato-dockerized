@@ -4,19 +4,21 @@
 # set -x
 
 # Get the path of the current script
-SCRIPT_PATH="${BASH_SOURCE[0]}"
+SCRIPT_PATH=${BASH_SOURCE[0]}
 
-SED_FLAG="-i"
-# Check for macOS and use the appropriate sed command flag
+# Initialize SED_FLAG as an array
+SED_FLAG=(-i)
+# Check for macOS and adjust the sed command flag accordingly
 if [[ "$OSTYPE" == "darwin"* ]]; then
-  SED_FLAG="-i ''"
+  SED_FLAG=(-i '')
 fi
 
+# Use the SED_FLAG array with proper quoting in the sed command
 # Convert Windows-style line endings to Unix-style line endings
-sed $SED_FLAG 's/\r$//' "$SCRIPT_PATH"
+sed "${SED_FLAG[@]}" 's/\r$//' "$SCRIPT_PATH"
 
 # Get the current directory name using ${pwd##*/}
-CURRENT_DIR_NAME="${PWD##*/}"
+CURRENT_DIR_NAME=${PWD##*/}
 # Get the current directory path using $(pwd)
 CURRENT_DIR_PATH=$(pwd)
 
@@ -25,10 +27,10 @@ OS_USER=$(whoami)
 OS_UID=$(id -u)
 
 # Define the path to your .env file
-DOCKER_ENV_FILE="$CURRENT_DIR_PATH/.env.docker"
+DOCKER_ENV_FILE="${CURRENT_DIR_PATH}/.env.docker"
 PARENT_DIR_PATH=$(dirname "$CURRENT_DIR_PATH")
 # Define the path to the .env file in the parent directory
-ENV_FILE="$PARENT_DIR_PATH/.env"
+ENV_FILE="${PARENT_DIR_PATH}/.env"
 
 # Create the .env file if it does not exist
 if [ ! -e "$DOCKER_ENV_FILE" ]; then
@@ -81,8 +83,8 @@ if [ -e "$DOCKER_ENV_FILE" ]; then
     VAR_VALUE="${DYNAMIC_ENV_VARS[$VAR_NAME]}"
     OLD_VALUE=$(grep "^$VAR_NAME=" "$DOCKER_ENV_FILE" | cut -d '=' -f2)
     # Replace the value if the key exists
-    sed $SED_FLAG "s^$VAR_NAME=.*^$VAR_NAME=$VAR_VALUE^" "$DOCKER_ENV_FILE"
-    sed $SED_FLAG "s^$VAR_NAME=.*^$VAR_NAME=$VAR_VALUE^" "$ENV_FILE"
+    sed "${SED_FLAG[@]}" "s^$VAR_NAME=.*^$VAR_NAME=$VAR_VALUE^" "$DOCKER_ENV_FILE"
+    sed "${SED_FLAG[@]}" "s^$VAR_NAME=.*^$VAR_NAME=$VAR_VALUE^" "$ENV_FILE"
 
     # Add the key if it does not exist in the .env.docker file
     if ! grep -q "^$VAR_NAME=" "$DOCKER_ENV_FILE"; then
