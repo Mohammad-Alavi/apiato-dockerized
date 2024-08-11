@@ -41,4 +41,7 @@ alias own='sudo chown -R $USER:$USER'
 alias mod='sudo chmod -R 777'
 alias remove='sudo rm -rf'
 alias list='ls -la'
+# Create a .gitkeep file in all empty directories
 alias keep='find . -type d -empty -exec touch {}/.gitkeep \;'
+# Ignore changes to the executable bit. https://github.com/desktop/desktop/issues/4728
+alias bitignore='git config core.filemode false'
