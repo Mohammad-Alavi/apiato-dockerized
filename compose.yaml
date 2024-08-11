@@ -25,7 +25,7 @@ services:
       NGINX_ENVSUBST_OUTPUT_DIR: /etc/nginx
       PHP_HOST: ${PHP_SERVICE:?err}
     env_file:
-      #- .env
+      - .env
       - "${PROJECT_FOLDER_NAME:?err}/.env.docker"
     depends_on:
       - ${PHP_SERVICE:?err}
