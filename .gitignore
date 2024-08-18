@@ -11,3 +11,4 @@
 docker/postgres/data/
 !LICENSE
 !README.md
+.DS_Store
