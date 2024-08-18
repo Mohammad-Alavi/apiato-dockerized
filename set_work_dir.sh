@@ -32,7 +32,7 @@ PARENT_DIR_PATH=$(dirname "$CURRENT_DIR_PATH")
 # Define the path to the .env file in the parent directory
 ENV_FILE="${PARENT_DIR_PATH}/.env"
 
-# Create the .env file if it does not exist
+# Create the .env.docker file if it does not exist
 if [ ! -e "$DOCKER_ENV_FILE" ]; then
   touch "$DOCKER_ENV_FILE"
   if [ $? -eq 0 ]; then
@@ -42,6 +42,8 @@ if [ ! -e "$DOCKER_ENV_FILE" ]; then
   fi
 fi
 
+FALLBACK_DEFAULT_PHP_SERVICE="php81"
+
 # Define an associative array to map variable names to their values
 declare -A DYNAMIC_ENV_VARS=(
   ["COMPOSE_PROJECT_NAME"]=$CURRENT_DIR_NAME
@@ -50,8 +52,16 @@ declare -A DYNAMIC_ENV_VARS=(
   ["WORKING_DIR"]="/opt/project"
   ["OS_USER"]=$OS_USER
   ["UID"]=$OS_UID
+  ["PHP_SERVICE"]=$FALLBACK_DEFAULT_PHP_SERVICE
 )
-DEFAULT_PHP_SERVICE="php81"
+
+# Check if the PHP_SERVICE variable is set in the .env file and set it to $FALLBACK_DEFAULT_PHP_SERVICE if it is empty
+DEFAULT_PHP_SERVICE=$(grep "^PHP_SERVICE=" "$ENV_FILE" | cut -d '=' -f2)
+if [ -z "$DEFAULT_PHP_SERVICE" ]; then
+  echo "PHP_SERVICE is empty in $ENV_FILE, setting it to $FALLBACK_DEFAULT_PHP_SERVICE (default)"
+  DEFAULT_PHP_SERVICE=$FALLBACK_DEFAULT_PHP_SERVICE
+fi
+
 # Check if the PHP_SERVICE variable is set in the .docker.env file
 if grep -q "^PHP_SERVICE=" "$DOCKER_ENV_FILE"; then
   # If its value is empty, it will be set to php and we tell the user
@@ -68,15 +78,18 @@ else
   DYNAMIC_ENV_VARS["PHP_SERVICE"]=$DEFAULT_PHP_SERVICE
 fi
 
-# Check if the .env file is readable and writable
+# Export the PHP_SERVICE variable for the current shell session so we can use it in the aliases
+export PHP_SERVICE=${DYNAMIC_ENV_VARS["PHP_SERVICE"]}
+
+# Check if the .env.docker file is readable and writable
 if [ ! -r "$DOCKER_ENV_FILE" ] || [ ! -w "$DOCKER_ENV_FILE" ]; then
-  # Make sure the .env file is writable
+  # Make sure the .env.docker file is writable
   echo "Setting permissions for $DOCKER_ENV_FILE"
   sudo chmod 777 "$DOCKER_ENV_FILE"
   sudo chown "$OS_USER:$OS_USER" "$DOCKER_ENV_FILE"
 fi
 
-# Check if the .env file exists
+# Check if the .env.docker file exists
 if [ -e "$DOCKER_ENV_FILE" ]; then
   # Loop through the associative array and replace variable values
   for VAR_NAME in "${!DYNAMIC_ENV_VARS[@]}"; do

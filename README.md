@@ -28,11 +28,18 @@ Update the `/$HOME/backend` to the path where you cloned this repository.
 ```bash
 . $HOME/backend/set_work_dir.sh && . $HOME/backend/.bash_aliases
 ```
-Then close and open the terminal. Now list the aliases with the command:
+Then reopen the terminal. Now list the aliases with the command:
 ```bash
 alias
 ```
 If you see the `composer` alias, then you are good to go.
+
+## Changing the PHP version
+You can change the PHP version by changing the `PHP_SERVICE` variable in the `.env.docker` file in your project root.
+```dotenv
+PHP_SERVICE=php82
+```
+PHP_SERVICE can be `php81`, `php82`, or `php83`. It corresponds to the service name in the `compose.yaml` file.
 
 ## Building the Docker Images
 You can build new PHP images with different versions using the following command.
