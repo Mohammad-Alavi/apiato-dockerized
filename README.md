@@ -78,7 +78,7 @@ etc...
 ```bash
 ERROR: Multi-platform build is not supported for the docker driver.
 ```
-You need to enable `contanered image store` in Docker settings.  
+You need to enable `containered image store` in Docker settings.  
 https://docs.docker.com/desktop/containerd/
 
 ### Failed to compute cache key
