@@ -46,7 +46,6 @@ FALLBACK_DEFAULT_PHP_SERVICE="php81"
 
 # Define an associative array to map variable names to their values
 declare -A DYNAMIC_ENV_VARS=(
-  ["COMPOSE_PROJECT_NAME"]=$CURRENT_DIR_NAME
   ["PROJECT_FOLDER_NAME"]=$CURRENT_DIR_NAME
   ["PROJECT_VOLUME"]="./$CURRENT_DIR_NAME:/opt/project"
   ["WORKING_DIR"]="/opt/project"
