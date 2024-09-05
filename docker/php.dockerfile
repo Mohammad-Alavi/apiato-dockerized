@@ -12,8 +12,8 @@ COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr
 RUN apk upgrade \
     && apk add --no-cache wget \
     && wget --no-check-certificate "https://pecl.php.net" \
-    && install-php-extensions mysqli pdo_mysql pgsql pdo_pgsql gd bcmath gmp mcrypt exif imagick gettext zip intl opcache \
-    && apk add --update linux-headers && apk add --update nodejs && apk add rsync
+    && install-php-extensions mysqli pdo_mysql pgsql pdo_pgsql intl opcache pcov \
+    && apk add --update linux-headers && apk add --update nodejs
 
 FROM masmikh/php-${PHP_VER}:latest AS php-debug
 RUN install-php-extensions xdebug
@@ -24,7 +24,7 @@ ENV XDEBUG_CONFIG="client_host=host.docker.internal client_port=9003"
 # Install the dependencies (should this be done in nginx or php image? or both? or neither?)
 #COPY package.json package-lock.json composer.json composer.lock ./
 #RUN npm install && composer install
-# We dont need composer in those php images. Do we? Can workflows like Github actions take caer of that? I think they already do.
+# We don't need composer in those php images. Do we? Can workflows like Github actions take care of that? I think they already do.
 #WORKDIR ${WORKING_DIR}
 #COPY ${PROJECT_FOLDER_NAME} .
 
