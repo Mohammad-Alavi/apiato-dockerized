@@ -131,8 +131,16 @@ function cd () {
 ```
 
 ## For macOS
+
 ### Outdated bash
 MacOS bash version is old and it uses `zsh` by default now.  
 Follow this guide to update your bash to the latest version.  
 https://stackoverflow.com/questions/77052638/changing-default-shell-from-zsh-to-bash-on-macos-catalina-and-beyond
 
+### ERROR: failed to solve: process "/bin/sh ...
+Run this command:
+```bash
+docker run --privileged --rm tonistiigi/binfmt --install all
+```
+Here you can find a more detailed explanation.
+https://docs.docker.com/build/building/multi-platform/
