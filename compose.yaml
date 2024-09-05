@@ -81,7 +81,7 @@ services:
     container_name: ${PROJECT_FOLDER_NAME:?err}_adminer
     restart: always
     ports:
-      - 8080:8080
+      - "8080:8080"
   node: &node
     build:
       context: .
