@@ -12,7 +12,7 @@ COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr
 RUN apk upgrade \
     && apk add --no-cache wget \
     && wget --no-check-certificate "https://pecl.php.net" \
-    && install-php-extensions mysqli pdo_mysql pgsql pdo_pgsql intl opcache pcov \
+    && install-php-extensions mysqli pdo_mysql pgsql pdo_pgsql intl opcache pcov bcmath \
     && apk add --update linux-headers && apk add --update nodejs
 
 FROM masmikh/php-${PHP_VER}:latest AS php-debug
