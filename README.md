@@ -23,15 +23,46 @@ DB_DATABASE=postgres
 DB_USERNAME=homestead
 DB_PASSWORD=secret
 ```
-#### Add this to your ~/.profile, ~/.bashrc or ~/.zshrc
-Update the `/$HOME/backend` to the path where you cloned this repository.
+
+## Bash Aliases
+### tl;dr
+Add this to your ~/.profile, ~/.bashrc or ~/.zshrc
 ```bash
-. $HOME/backend/set_work_dir.sh && . $HOME/backend/.bash_aliases
+set_aliases_based_on_dir() {
+    # Update the `/$HOME/backend` to the path where you cloned this repository.
+    project_dir="$HOME/backend"
+
+    if [[ "$PWD" == "$project_dir/"* ]]; then
+        # Source set_work_dir.sh and .bash_aliases
+        [ -f "$project_dir/set_work_dir.sh" ] && . "$project_dir/set_work_dir.sh"
+        [ -f "$project_dir/.bash_aliases" ] && . "$project_dir/.bash_aliases"
+    else
+        # Unalias everything from the .bash_aliases file
+        [ -f "$project_dir/.bash_aliases" ] && while IFS= read -r line || [ -n "$line" ]; do
+            alias_name=$(echo "$line" | cut -d'=' -f1 | sed "s/alias //g")
+            unalias $alias_name 2>/dev/null
+        done < "$project_dir/.bash_aliases"
+    fi
+}
+
+# Hook the function to run before each prompt
+PROMPT_COMMAND=set_aliases_based_on_dir
 ```
 Then reopen the terminal. Now list the aliases with the command:
 ```bash
 alias
 ```
+### Explanation
+This script dynamically sets or removes aliases based on the current working directory.
+#### Directory-Based Alias Handling
+If the terminal is opened or navigated into any subdirectory under ~/backend, the script sources two files: 
+  - set_work_dir.sh: Configures environment variables or other settings specific to the project. 
+  - .bash_aliases: Loads custom aliases relevant to the project.
+### Unalias When Outside the Directory
+When the terminal is outside the ~/backend directory, the script unaliases all aliases defined in .bash_aliases.
+### Triggered on Every Prompt
+The function runs before every prompt via the PROMPT_COMMAND to ensure
+the aliases are always updated based on the current directory.
 If you see the `composer` alias, then you are good to go.
 
 ## Changing the PHP version
